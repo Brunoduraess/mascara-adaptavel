@@ -9,10 +9,10 @@
 <body>
 
     <label>Telefone:</label>
-    <input type="text" name="telefone" id="telefone">
+    <input type="text" name="telefone" id="telefone" mask-telefone>
 
     <label>CPF / CNPJ:</label>
-    <input type="text" name="cpfcnpj" id="cpfcnpj">
+    <input type="text" name="cpfcnpj" id="cpfcnpj" mask-cpf-cnpj>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -23,50 +23,27 @@
 
     <script type="text/javascript">
 
-        $("#telefone").keydown(function () {
-            try {
-                $("#telefone").unmask();
-            }
-            catch (e) { }
-            var tamanho = $("#telefone").val().length; if (tamanho < 10) { $("#telefone").mask("(00)0000-0000"); } else { $("#telefone").mask("(00)00000-0000"); }
+            $(document).on('keydown', '[mask-cpf-cnpj]', function(e) {
 
-            // ajustando foco 
-            var elem = this; setTimeout(function () {
+                var digit = e.key.replace(/\D/g, '');
 
-                // mudando a posição do seletor
-                elem.selectionStart = elem.selectionEnd = 10000;
-            }, 0);
+                var value = $(this).val().replace(/\D/g, '');
 
-            // mudando o foco 
-            var currentValue = $(this).val(); $(this).val(''); $(this).val(currentValue);
-        });
+                var size = value.concat(digit).length;
 
+                $(this).mask((size <= 11) ? '000.000.000-00' : '00.000.000/0000-00');
+            });
 
+            $(document).on('keydown', '[mask-telefone]', function(e) {
 
-        $("#cpfcnpj").keydown(function () {
-            try {
-                $("#cpfcnpj").unmask();
-            } catch (e) { }
+                var digit = e.key.replace(/\D/g, '');
 
-            var tamanho = $("#cpfcnpj").val().length;
+                var value = $(this).val().replace(/\D/g, '');
 
-            if (tamanho < 11) {
-                $("#cpfcnpj").mask("999.999.999-99");
-            } else {
-                $("#cpfcnpj").mask("99.999.999/9999-99");
-            }
+                var size = value.concat(digit).length;
 
-            // ajustando foco
-            var elem = this;
-            setTimeout(function () {
-                // mudando a posição do seletor
-                elem.selectionStart = elem.selectionEnd = 10000;
-            }, 0);
-            // mudando o foco
-            var currentValue = $(this).val();
-            $(this).val('');
-            $(this).val(currentValue);
-        });
+                $(this).mask((size <= 10) ? '(00) 0000-0000' : '(00) 00000-0000');
+            });
 
     </script>
 
